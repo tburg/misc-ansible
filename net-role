@@ -1,9 +1,0 @@
----
-- import_role:
-    name: net-role
-  when: >
-          ansible_default_ipv4.network | regex_search("192.168.")
-          or ansible_default_ipv4.network | regex_search("10.0.")
-          or ansible_default_ipv4.network | regex_search("172.16.")
-  tags:
-   - net
