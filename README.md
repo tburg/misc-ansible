@@ -1,3 +1,3 @@
 Misc ansible things:
 
-local.yml tests for amz2, amz.yml tests for a network
+local.yml tests for OS, OS yml tests for a network
