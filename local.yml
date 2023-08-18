@@ -1,0 +1,8 @@
+---
+- hosts: localhost
+  gather_facts: yes
+  pre_tasks:
+    - setup:
+        gather_subset: "min"
+  become: yes
+  tasks:
