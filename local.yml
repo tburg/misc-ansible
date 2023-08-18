@@ -12,3 +12,10 @@
     when: ansible_distribution == "Amazon" and ansible_distribution_major_version == "2"
     tags:
       - always
+
+  - name: include rhel9 task
+    include_tasks: rhel9.yml
+    when: ansible_distribution == "RedHat" and ansible_distribution_major_version == "9"
+    tags:
+      - always
+
