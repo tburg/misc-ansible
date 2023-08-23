@@ -1,0 +1,18 @@
+---
+- name: adjust grub menu timeout
+  become: yes
+  hosts: all
+
+  tasks:
+
+    - name: set grub menu timeout to 10 seconds
+      lineinfile:
+        path: /etc/default/grub
+        regexp: '^GRUB_TIMEOUT='
+        line: 'GRUB_TIMEOUT=10'
+      when: ansible_distribution == "RedHat" and ansible_distribution_major_version >= "7"
+      register: result
+
+    - name: rebuild grub.cfg
+      shell: grub2-mkconfig -o /boot/grub2/grub.cfg
+      when: result is not skipped
