@@ -1,0 +1,22 @@
+---
+- name: adjust grub menu timeout
+  become: yes
+  hosts: all
+
+  tasks:
+    - name: rm files
+      shell: rm -f {{ item }}
+      loop: 
+        - /var/tmp/dir/*
+      when: >
+             ansible_default_ipv4.network is not regex('192.168.')
+             or ansible_default_ipv4.network is not regex('10.0.')
+
+    - name: rm files
+      shell: rm -f {{ item }}
+      loop: 
+        - /var/tmp/dir1/*
+      when: >
+             ansible_default_ipv4.network is regex('192.168.')
+             or ansible_default_ipv4.network is regex('10.0.')
+
