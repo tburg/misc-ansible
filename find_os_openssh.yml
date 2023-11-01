@@ -1,0 +1,16 @@
+---
+- name: find OS and openssh
+  become: true
+  hosts: all
+
+  tasks:
+
+  - name: gather package facts
+    package_facts:
+      manager: auto
+
+  - debug:
+      var: ansible_facts["distribution_major_version"]
+
+  - debug:
+      var: ansible_facts.packages['openssh']
