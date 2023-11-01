@@ -1,0 +1,13 @@
+---
+
+- name: upgrading mdatp
+  become: yes
+  gather_facts: false
+  hosts: all
+
+  tasks:
+
+    - name: enable repo and update mdatp
+      yum:
+        enablerepo: "packages-microsoft-com-prod,packages-microsoft-com-prod"
+        name: mdatp-101.98.89-1
