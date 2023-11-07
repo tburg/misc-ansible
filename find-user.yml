@@ -1,0 +1,25 @@
+---
+
+- name: fix account
+  hosts: localhost
+  become: yes
+  vars:
+    - user: user1
+    - uid: 10001
+    - group: group1
+    - gid: 10001
+    - home: /home/user1
+
+  tasks:
+
+    - name: look for existing account
+      getent:
+        database: passwd
+        key: "{{ user }}"
+      register: getent_user
+
+    - debug:
+        var: getent_user
+      when: >
+              getent_user is regex('user1')
+              and getent_user is regex('10001')
