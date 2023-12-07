@@ -1,0 +1,7 @@
+---
+- name: gather package facts
+  package_facts:
+
+- name: install remote rpm if it's not already installed
+  command: rpm -Uvh http://somehost.com/pub/some-package.noarch.rpm
+  when: "'some-package' not in ansible_facts.packages"
