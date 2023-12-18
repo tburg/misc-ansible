@@ -57,7 +57,7 @@
         src: /etc/ssh/keys/{{ username }}_authorized_keys
         dest: /etc/ssh/keys/{{ username }}_authorized_keys
         owner: root
-        group: wheelmfa
+        group: wheel
         mode: 0644
 
     - name: is authorized_keys a file
