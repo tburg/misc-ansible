@@ -1,0 +1,75 @@
+---
+#
+
+- name: add group and user
+  hosts: all
+  become: yes
+  gather_facts: no
+  vars_prompt:
+
+    - name: username
+      prompt: User Name
+      private: no
+
+    - name: groupname
+      prompt: Group Name
+      private: no
+
+    - name: gid
+      prompt: GID
+      private: no
+
+    - name: uid
+      prompt: UID
+      private: no
+
+    - name: comment
+      prompt: Password Comment
+      private: no
+
+
+  tasks:
+
+    - name: add group
+      group:
+        name: "{{ groupname }}"
+        gid: "{{ gid }}"
+
+    - name: add user
+      user:
+        name: "{{ username }}"
+        uid: "{{ uid }}"
+        group: "{{ groupname }}"
+        append: yes
+        groups: wheelmfa
+        comment: "{{ comment }}"
+
+    - name: make .ssh
+      file:
+        path: /home/{{ username }}/.ssh
+        state: directory
+        owner: "{{ username }}"
+        group: "{{ groupname }}"
+        mode: 0700
+
+    - name: copying ssh key
+      copy:
+        src: /etc/ssh/keys/{{ username }}_authorized_keys
+        dest: /etc/ssh/keys/{{ username }}_authorized_keys
+        owner: root
+        group: wheelmfa
+        mode: 0644
+
+    - name: is authorized_keys a file
+      stat:
+        path: /home/{{ username }}/.ssh/authorized_keys
+      register: reg
+
+    - name: copy authorized_key if existing is a regular file
+      copy:
+        src: /etc/ssh/keys/{{ username }}_authorized_keys
+        dest: /home/{{ username }}/.ssh/authorized_keys
+        owner: "{{ username }}"
+        group: "{{ groupname }}"
+        mode: 0600
+      when: reg.stat.isreg is defined and reg.stat.isreg
